@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CommandeRouteImport } from './routes/commande'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as FormationsRouteImport } from './routes/formations'
@@ -19,6 +20,11 @@ import { Route as FormationsSlugRouteImport } from './routes/formations.$slug'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CommandeRoute = CommandeRouteImport.update({
@@ -49,6 +55,7 @@ const FormationsSlugRoute = FormationsSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/commande': typeof CommandeRoute
   '/contact': typeof ContactRoute
   '/formations': typeof FormationsRouteWithChildren
@@ -57,6 +64,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/commande': typeof CommandeRoute
   '/contact': typeof ContactRoute
   '/formations/$slug': typeof FormationsSlugRoute
@@ -65,6 +73,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/commande': typeof CommandeRoute
   '/contact': typeof ContactRoute
   '/formations': typeof FormationsRouteWithChildren
@@ -75,16 +84,24 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/auth'
     | '/commande'
     | '/contact'
     | '/formations'
     | '/formations/$slug'
     | '/formations/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/commande' | '/contact' | '/formations/$slug' | '/formations'
+  to:
+    | '/'
+    | '/auth'
+    | '/commande'
+    | '/contact'
+    | '/formations/$slug'
+    | '/formations'
   id:
     | '__root__'
     | '/'
+    | '/auth'
     | '/commande'
     | '/contact'
     | '/formations'
@@ -94,6 +111,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRoute
   CommandeRoute: typeof CommandeRoute
   ContactRoute: typeof ContactRoute
   FormationsRoute: typeof FormationsRouteWithChildren
@@ -106,6 +124,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/commande': {
@@ -162,6 +187,7 @@ const FormationsRouteWithChildren = FormationsRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRoute: AuthRoute,
   CommandeRoute: CommandeRoute,
   ContactRoute: ContactRoute,
   FormationsRoute: FormationsRouteWithChildren,
