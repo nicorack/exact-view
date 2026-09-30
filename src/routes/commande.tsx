@@ -29,8 +29,8 @@ const orderSchema = z.object({
 });
 
 export const Route = createFileRoute("/commande")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    formation: typeof search.formation === "string" ? search.formation : undefined,
+  validateSearch: (search: Record<string, unknown>): { formation?: string } => ({
+    formation: typeof search["formation"] === "string" ? (search["formation"] as string) : undefined,
   }),
   head: () => ({
     meta: [
