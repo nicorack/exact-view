@@ -14,16 +14,210 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      contact_messages: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          is_read: boolean
+          message: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          is_read?: boolean
+          message: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          is_read?: boolean
+          message?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      formations: {
+        Row: {
+          bonus_fr: string
+          bonus_mg: string
+          created_at: string
+          currency: string
+          description_fr: string
+          description_mg: string
+          duration_fr: string
+          duration_mg: string
+          id: string
+          image_url: string | null
+          is_active: boolean
+          level: string
+          name_fr: string
+          name_mg: string
+          objectives_fr: string[]
+          objectives_mg: string[]
+          price: number
+          program_fr: string[]
+          program_mg: string[]
+          slug: string
+          tagline_fr: string
+          tagline_mg: string
+          updated_at: string
+          video_url: string | null
+        }
+        Insert: {
+          bonus_fr?: string
+          bonus_mg?: string
+          created_at?: string
+          currency?: string
+          description_fr?: string
+          description_mg?: string
+          duration_fr?: string
+          duration_mg?: string
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          level?: string
+          name_fr: string
+          name_mg: string
+          objectives_fr?: string[]
+          objectives_mg?: string[]
+          price?: number
+          program_fr?: string[]
+          program_mg?: string[]
+          slug: string
+          tagline_fr?: string
+          tagline_mg?: string
+          updated_at?: string
+          video_url?: string | null
+        }
+        Update: {
+          bonus_fr?: string
+          bonus_mg?: string
+          created_at?: string
+          currency?: string
+          description_fr?: string
+          description_mg?: string
+          duration_fr?: string
+          duration_mg?: string
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          level?: string
+          name_fr?: string
+          name_mg?: string
+          objectives_fr?: string[]
+          objectives_mg?: string[]
+          price?: number
+          program_fr?: string[]
+          program_mg?: string[]
+          slug?: string
+          tagline_fr?: string
+          tagline_mg?: string
+          updated_at?: string
+          video_url?: string | null
+        }
+        Relationships: []
+      }
+      orders: {
+        Row: {
+          admin_note: string
+          amount: number
+          country: string
+          created_at: string
+          currency: string
+          email: string
+          formation_id: string | null
+          formation_name: string
+          full_name: string
+          id: string
+          payment_method: string
+          phone: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          admin_note?: string
+          amount?: number
+          country: string
+          created_at?: string
+          currency?: string
+          email: string
+          formation_id?: string | null
+          formation_name: string
+          full_name: string
+          id?: string
+          payment_method: string
+          phone: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          admin_note?: string
+          amount?: number
+          country?: string
+          created_at?: string
+          currency?: string
+          email?: string
+          formation_id?: string | null
+          formation_name?: string
+          full_name?: string
+          id?: string
+          payment_method?: string
+          phone?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_formation_id_fkey"
+            columns: ["formation_id"]
+            isOneToOne: false
+            referencedRelation: "formations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      claim_admin: { Args: never; Returns: boolean }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +344,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const
