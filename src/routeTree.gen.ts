@@ -10,6 +10,8 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CommandeRouteImport } from './routes/commande'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as FormationsRouteImport } from './routes/formations'
 import { Route as FormationsIndexRouteImport } from './routes/formations.index'
 import { Route as FormationsSlugRouteImport } from './routes/formations.$slug'
@@ -17,6 +19,16 @@ import { Route as FormationsSlugRouteImport } from './routes/formations.$slug'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CommandeRoute = CommandeRouteImport.update({
+  id: '/commande',
+  path: '/commande',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FormationsRoute = FormationsRouteImport.update({
@@ -37,32 +49,53 @@ const FormationsSlugRoute = FormationsSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/commande': typeof CommandeRoute
+  '/contact': typeof ContactRoute
   '/formations': typeof FormationsRouteWithChildren
   '/formations/$slug': typeof FormationsSlugRoute
   '/formations/': typeof FormationsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/commande': typeof CommandeRoute
+  '/contact': typeof ContactRoute
   '/formations/$slug': typeof FormationsSlugRoute
   '/formations': typeof FormationsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/commande': typeof CommandeRoute
+  '/contact': typeof ContactRoute
   '/formations': typeof FormationsRouteWithChildren
   '/formations/$slug': typeof FormationsSlugRoute
   '/formations/': typeof FormationsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/formations' | '/formations/$slug' | '/formations/'
+  fullPaths:
+    | '/'
+    | '/commande'
+    | '/contact'
+    | '/formations'
+    | '/formations/$slug'
+    | '/formations/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/formations/$slug' | '/formations'
-  id: '__root__' | '/' | '/formations' | '/formations/$slug' | '/formations/'
+  to: '/' | '/commande' | '/contact' | '/formations/$slug' | '/formations'
+  id:
+    | '__root__'
+    | '/'
+    | '/commande'
+    | '/contact'
+    | '/formations'
+    | '/formations/$slug'
+    | '/formations/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CommandeRoute: typeof CommandeRoute
+  ContactRoute: typeof ContactRoute
   FormationsRoute: typeof FormationsRouteWithChildren
 }
 
@@ -73,6 +106,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/commande': {
+      id: '/commande'
+      path: '/commande'
+      fullPath: '/commande'
+      preLoaderRoute: typeof CommandeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/formations': {
@@ -115,6 +162,8 @@ const FormationsRouteWithChildren = FormationsRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CommandeRoute: CommandeRoute,
+  ContactRoute: ContactRoute,
   FormationsRoute: FormationsRouteWithChildren,
 }
 export const routeTree = rootRouteImport
